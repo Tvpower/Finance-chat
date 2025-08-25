@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+streamlit
+langchain
+pypdf
+python-dotenv
+chromadb
+sentence-transformers
