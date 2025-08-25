@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import JSONResponse
 import os
+from ai_core import process_documents, get_chat_response
 
 app = FastAPI(title="Finance helper API")
 
@@ -8,28 +9,25 @@ UPLOAD_FOLDER = "./uploads"
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-app.post("/upload/")
+@app.post("/upload/")
 async def upload_file(file: UploadFile = File(...)):
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     with open(file_path, "wb") as buffer:
         buffer.write(file.file.read())
 
-    # TODO: Triggers the document processing pipeline
-    # prcess_document(file_path)
+    try:
+        process_documents(file_path)
+        return JSONResponse(content={"file_path": file_path, "status": "processing_finished"}, status_code=200)
 
-    print(f"File '{file.filename}' uploaded and saved")
-
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
 
     return JSONResponse(content={"file_path": file_path, "status": "processing_started"}, status_code=200)
 
 @app.post("/chat/")
 async def chat_with_doc(query: str = Form(...)):
 
-    # TODO: Get response from the RAG pipeline
-    # response = get_chat_response(query)
-
-    print(f"Chat query: '{query}'")
-    response = "placeholder for now remember to chance this :3"
+    response = get_chat_response(query)
     return JSONResponse(content={"response": response})
 
 if __name__ == "__main__":
