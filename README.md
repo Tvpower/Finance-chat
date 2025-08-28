@@ -2,6 +2,8 @@
 
 A smart financial document assistant that uses AI to help you analyze and chat with your financial PDF documents. Upload your financial reports, statements, or any financial PDFs and get instant answers to your questions!
 
+I made this for a job interview at National Debt Relief for a Generative AI Engineer feel free to use it.
+
 ## 🚀 Features
 
 - **PDF Document Upload**: Upload and process financial PDF documents
